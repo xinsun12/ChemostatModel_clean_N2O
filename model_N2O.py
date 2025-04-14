@@ -223,9 +223,9 @@ def OMZredox(timesteps, nn_output, dt, dil, out_at_day, \
                
         #### include N2O from ammonia in the model
         if m_O2 <= (1/6.022*1e-18): #0.0685:
-            N2OammoniaRate = (0.2/(1/6.022*1e-18) + 0.08)/100* ammonia_ox #3/100 * ammonia_ox #N2Oammonia
+            N2OammoniaRate = 1/(1+1/((0.2/(1/6.022*1e-18) + 0.08)/100)) * ammonia_ox #N2Oammonia
         else:
-            N2OammoniaRate = (0.2/(m_O2) + 0.08)/100 * ammonia_ox #N2Oammonia
+            N2OammoniaRate = 1/(1+1/((0.2/(m_O2) + 0.08)/100)) * ammonia_ox #N2Oammonia
             
         ## Below are the change of OM, DIN.. over time. For example, d[OM]/dt, d[NO3]/dt
         # Organic matter
