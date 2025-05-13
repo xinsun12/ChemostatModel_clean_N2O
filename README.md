@@ -8,3 +8,6 @@ Contains model parameters for traits of different microbial functional groups an
 Used to run the model
 ### 4. files ended with star_Xin.py
 Contain functions to calculate different R*
+
+### !ExperimentalData_110425.xlsx
+All new experimental data obtained in this study
