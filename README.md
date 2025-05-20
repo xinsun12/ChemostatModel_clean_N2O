@@ -9,5 +9,8 @@ Used to run the model
 ### 4. files ended with star_Xin.py
 Contain functions to calculate different R*
 
+### plot_data.ipynb
+Codes used to plot the N2O and O2 map for the ETNP OMZ
+
 ### !ExperimentalData_110425.xlsx
 All new experimental data obtained in this study
