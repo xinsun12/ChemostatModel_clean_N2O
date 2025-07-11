@@ -36,27 +36,27 @@ def OMZredox(timesteps, nn_output, dt, dil, out_at_day, \
              N2Oammonia):
     
     
-    # transfer initial inputs to model variables
-    m_Sd = initialOM
-    m_O2 = in_O2
-    m_NO3 = in_NO3
-    m_NO2 = initialNO2
-    m_NH4 = in_NH4
-    m_N2 = in_N2
-    m_N2O = in_N2O
-    m_bHet = in_bHet
-    m_b1Den = in_b1Den
-    m_b2Den = in_b2Den
-    m_b3Den = in_b3Den
-    m_b4Den = in_b4Den
-    m_b5Den = in_b5Den
-    m_b6Den = in_b6Den
-    m_b7Den = in_b7Den
-    m_bAOO = in_bAOO
-    m_bNOO = in_bNOO
-    m_bAOX = in_bAOX
+    # transfer initial inputs to model variables, intial inputs are defined in the "call_model_N2O_clean" file
+    m_Sd = initialOM # concentration of organic matter
+    m_O2 = in_O2 # concentration of oxygen
+    m_NO3 = in_NO3 # concentration of nitrate
+    m_NO2 = initialNO2 # concentration of nitrite
+    m_NH4 = in_NH4 # concentration of ammmonia
+    m_N2 = in_N2 # concentration of dinitrogen gas
+    m_N2O = in_N2O # concentration of nitrous oxide
+    m_bHet = in_bHet # biomass of aerobic heterotrophic microbes
+    m_b1Den = in_b1Den # biomass of NO3-->NO2 denitrifiers
+    m_b2Den = in_b2Den # biomass of NO2-->N2 denitrifiers
+    m_b3Den = in_b3Den # biomass of NO3-->N2 (complete) denitrifiers
+    m_b4Den = in_b4Den # biomass of NO2-->N2O denitrifiers
+    m_b5Den = in_b5Den # biomass of N2O-->N2 denitrifiers
+    m_b6Den = in_b6Den # biomass of NO3-->N2O denitrifiers
+    m_b7Den = in_b7Den # biomass of "book-end" denitrifiers (NO3-->NO2 and N2O-->N2)
+    m_bAOO = in_bAOO # biomass of ammonia-oxidizing organisms
+    m_bNOO = in_bNOO # biomass of nitrite-oxidizing organisms
+    m_bAOX = in_bAOX # biomass of anaerobic ammonia-oxidizing (anammox) bacteria 
     
-    # set the output arrays 
+    # set the output arrays
     out_Sd = np.ones((int(nn_output)+1)) * np.nan
     out_O2 = np.ones((int(nn_output)+1)) * np.nan
     out_NO3 = np.ones((int(nn_output)+1)) * np.nan
@@ -100,7 +100,7 @@ def OMZredox(timesteps, nn_output, dt, dil, out_at_day, \
     out_rAOX = np.ones((int(nn_output)+1)) * np.nan
     out_rN2Oammonia = np.ones((int(nn_output)+1)) * np.nan
     
-    # set the array for recording average activity of microbes 
+    # set the array for recording the average activity of microbes 
     interval = int((1/dt * out_at_day))
     
     # record the initial conditions
@@ -128,6 +128,9 @@ def OMZredox(timesteps, nn_output, dt, dil, out_at_day, \
     for t in np.arange(1,timesteps+1,1):
 
         # 3.	‘MMµ’: Define Vmax by µmax and yield, like the other Vmax in the model, then add M-M equation to that.
+        # Vmax is the maximum nutrient update rate, K is the half saturation constant, and mumax is the maximum growth rate of a certain microbial functional type. 
+        # p is the uptake rate of a nutrient calculated from Vmax and K
+        # u is the growth rate of a certain microbial functional type calculated from p and biomass yield, y.
         VmaxO2_aer = mumax_Het / y_oO2
         p_O2_aer = VmaxO2_aer * m_O2 / (K_o2_aer + m_O2)
 
