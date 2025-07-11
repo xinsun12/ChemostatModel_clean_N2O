@@ -154,7 +154,7 @@ nitrate_star_den3 = R_star(dil, K_n_Den, VmaxN_3Den, y_n3NO3)
 nitrate_star_den6 = R_star(dil, K_n_Den, VmaxN_6Den, y_n6NO3)
 
 
-#%% begin loop of experiments
+#%% begin loop of experiments by running the model
 
 from model_N2O import OMZredox
 
@@ -298,7 +298,7 @@ for k in np.arange(len(outputd1)):
         fin_rAOX[k,m] = np.nanmean(out_rAOX[-nn_outputforaverage::])
         fin_rN2Oammonia[k,m] = np.nanmean(out_rN2Oammonia[-nn_outputforaverage::])
             
-# delete results only save fin (average)
+# delete results called "out_" and only save the averaged output "fin_" to save space
 del results
 del out_Sd, out_O2, out_NO3, out_NO2, out_NH4, out_N2, out_N2O
 del out_bHet, out_b1Den, out_b2Den, out_b3Den, out_b4Den, out_b5Den, out_b6Den, out_b7Den, out_bAOO, out_bNOO, out_bAOX
@@ -306,7 +306,7 @@ del out_uHet, out_u1Den, out_u2Den, out_u3Den, out_u4Den, out_u5Den, out_u6Den, 
 del out_rHet, out_rHetAer, out_rO2C, out_r1Den, out_r2Den, out_r3Den, out_r4Den, out_r5Den, out_r6Den, out_rAOO, out_rNOO, out_rAOX
 
 
-#%% round up function
+#%% round up function, this will be used in figures below
 import math
 def round_up(n, decimals=0):
     multiplier = 10**decimals
