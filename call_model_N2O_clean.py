@@ -318,99 +318,75 @@ pulse_int = 50
 
 
 
-#%% N2O Fig.3 a-f Pcolormesh_Contour plot_% biomasses 
-fstic = 13
-fslab = 15
+#%% N2O Fig.3 b-d
+fstic = 16
+fslab = 18
+fsleg = 10.5
 colmap = lighten(cmo.haline, 0.8)
 
-fig = plt.figure(figsize=(11,6))
-gs = GridSpec(2, 3)
+fig = plt.figure(figsize=(12,4))
+gs = GridSpec(1, 3)
 
+ChoiceOM = 75
+OMxO2 = (xpulse_Sd[ChoiceOM]/pulse_int + Sd0_exp * dil)/(O20_exp * dil)
+# creat subplots
 ax1 = plt.subplot(gs[0,0])
+ax1.set_title('')
+print("OM=", xpulse_Sd[ChoiceOM]/pulse_int + Sd0_exp * dil, "µM-N/d")
+# plt.plot(OMxO2, fin_b1Den[ChoiceOM,:], '-', color='firebrick', label='NO$_3$$^-$→NO$_2$$^-$', linewidth = 3)
+# plt.plot(OMxO2, fin_b6Den[ChoiceOM,:], '--', color='firebrick', label='NO$_3$$^-$→N$_2$O', linewidth = 3)
+# plt.plot(OMxO2, fin_b3Den[ChoiceOM,:], ':', color='firebrick', label='NO$_3$$^-$→N$_2$', linewidth = 3)
+# plt.plot(OMxO2, fin_b4Den[ChoiceOM,:], '-', color='goldenrod', label='NO$_2$$^-$→N$_2$O', linewidth = 3)
+# plt.plot(OMxO2, fin_b2Den[ChoiceOM,:], '--', color='goldenrod', label='NO$_2$$^-$→N$_2$', linewidth = 3)
+# plt.plot(OMxO2, fin_b5Den[ChoiceOM,:], '-', color='royalblue', label='N$_2$O→N$_2$', linewidth = 3) 
+plt.plot(OMxO2, fin_bAOX[ChoiceOM,:], '-', color='forestgreen', label='Anammox', linewidth = 3) 
+plt.plot(OMxO2, fin_bHet[ChoiceOM,:], ':', color='grey', label='AerHet', linewidth = 3)
+plt.plot(OMxO2, fin_bAOO[ChoiceOM,:], '--', color='grey', label='AOA', linewidth = 3) 
+plt.plot(OMxO2, fin_bNOO[ChoiceOM,:], '-', color='grey', label='NOB', linewidth = 3) 
+plt.plot(OMxO2, fin_b1Den[ChoiceOM,:]+fin_b2Den[ChoiceOM,:]+fin_b3Den[ChoiceOM,:]+fin_b4Den[ChoiceOM,:]+fin_b5Den[ChoiceOM,:]+fin_b6Den[ChoiceOM,:], '-', color='black', label='Total denitrifiers', linewidth = 3)
+
+ax1.set_xscale('log')
+ax1.set_xlabel("OM:O$_2$ supply", fontsize=fslab)
+ax1.set_ylabel("Biomass (µM-N)", fontsize=fslab)
+
+# creat subplots
 ax2 = plt.subplot(gs[0,1])
+ax2.set_title('')
+print("OM=", xpulse_Sd[ChoiceOM]/pulse_int + Sd0_exp * dil, "µM-N/d")
+plt.plot(OMxO2, (fin_r6Den[ChoiceOM,:])/(fin_rN2Oammonia[ChoiceOM,:] + fin_r6Den[ChoiceOM,:]) * 100, '--', color='firebrick', label='% NO$_3$$^-$→N$_2$O in N$_2$O prod', linewidth = 3)
+plt.plot(OMxO2, (fin_rN2Oammonia[ChoiceOM,:])/(fin_rAOO[ChoiceOM,:]+fin_rN2Oammonia[ChoiceOM,:]) * 100,'--', color='grey', label='% NH$_4$$^+$→N$_2$O in NH$_4$$^+$ oxi', linewidth = 3)
+
+ax2.set_xscale('log')
+ax2.set_xlabel("OM:O$_2$ supply", fontsize=fslab)
+ax2.set_ylabel("Percentage (%)", fontsize=fslab)
+
+# creat subplots
 ax3 = plt.subplot(gs[0,2])
-ax4 = plt.subplot(gs[1,0])
-ax5 = plt.subplot(gs[1,1])
-ax6 = plt.subplot(gs[1,2])
-# set x and y axes
-contourX = outputd2 * dil
-contourY = xpulse_Sd/xpulse_int + Sd0_exp * dil 
+ax3.set_title('')
+OMx = (xpulse_Sd/pulse_int + Sd0_exp * dil) / (30 * dil)
+ChoiceO2 = 0
+print("O2=", O20_exp[ChoiceO2]*dil, "µM/d")
 
-# set colorbar range to be the same
+plt.plot(OMx, fin_r1Den[:,ChoiceO2], '-', color='firebrick', label='NO$_3$$^-$→NO$_2$$^-$', linewidth = 3)
+plt.plot(OMx, fin_r5Den[:,ChoiceO2], '-', color='royalblue', label='N$_2$O→N$_2$', linewidth = 3) 
+plt.plot(OMx, fin_r6Den[:,ChoiceO2], '--', color='firebrick', label='NO$_3$$^-$→N$_2$O', linewidth = 3)
+plt.plot(OMx, fin_r3Den[:,ChoiceO2], ':', color='firebrick', label='NO$_3$$^-$→N$_2$', linewidth = 3)
+plt.plot(OMx, fin_r4Den[:,ChoiceO2], '-', color='goldenrod', label='NO$_2$$^-$→N$_2$O', linewidth = 3)
+plt.plot(OMx, fin_r2Den[:,ChoiceO2], '--', color='goldenrod', label='NO$_2$$^-$→N$_2$', linewidth = 3)
+plt.plot(OMx, fin_rAOX[:,ChoiceO2], '-', color='forestgreen', label='Anammox', linewidth = 3) 
 
-fin_ballanaerobes = fin_b1Den+fin_b2Den+fin_b3Den+fin_b4Den+fin_b5Den+fin_b6Den+fin_bAOX
-fin_ballaerobes = fin_bHet+fin_bAOO+fin_bNOO
-fin_ballbio = fin_ballanaerobes+fin_ballaerobes
-fin_allNs = fin_Sd+fin_NO3+fin_NO2+fin_NH4+fin_N2O+fin_N2
-nh4_n2_AOX = (e_n2AOX*0.5*y_nh4AOX)
+ax3.set_xlabel("OM:NO$_3$$^-$ supply", fontsize=fslab)
+ax3.set_ylabel("Rate (µM-N d$^-$$^1$)", fontsize=fslab)
 
-
-
-ax1.set_title('N$_2$O (nM)', fontsize=fslab)
-p1 = ax1.pcolormesh(contourX, contourY, fin_N2O*1e3*0.5, cmap=colmap)
-
-ax2.set_title('NO$_3$$^-$→N$_2$O (µM-N/d)', fontsize=fslab)
-p2 = ax2.pcolormesh(contourX, contourY, fin_r6Den, cmap=colmap)
-
-ax3.set_title('% Aer Auto', fontsize=fslab)
-p3 = ax3.pcolormesh(contourX, contourY, (fin_bAOO+fin_bNOO)/fin_ballbio * 100, 
-                     vmin=0, vmax=100, cmap=colmap)
-
-ax4.set_title('O$_2$ (µM)', fontsize=fslab)
-p4 = ax4.pcolormesh(contourX, contourY, fin_O2, 
-                      cmap=colmap) #0.063
-
-ax5.set_title('% NO$_3$$^-$→N$_2$O in N$_2$O prod', fontsize=fslab)
-p5 = ax5.pcolormesh(contourX, contourY, (fin_r6Den)/(fin_rN2Oammonia + fin_r6Den) * 100,
-                      vmin=0, vmax=100, cmap=colmap)
-                   
-ax6.set_title('% NH$_4$$^+$→N$_2$O in NH$_4$$^+$ oxi', fontsize=fslab)
-p6 = ax6.pcolormesh(contourX, contourY, (fin_rN2Oammonia)/(fin_rAOO+fin_rN2Oammonia) * 100, 
-                      vmin=0.08, vmax=3.24, cmap=colmap) #0.08
-
-
-
-## delete axis number of some subplots
-ax1.tick_params(labelsize=fstic, labelbottom=False)
-ax2.tick_params(labelsize=fstic, labelleft=False, labelbottom=False)
-ax3.tick_params(labelsize=fstic, labelleft=False, labelbottom=False)
-ax1.tick_params(labelsize=fstic)
-ax5.tick_params(labelsize=fstic, labelleft=False)
-ax6.tick_params(labelsize=fstic, labelleft=False)
-## add axis title to some subplots
-contourYlabel = 'OM supply (µM-N d$^-$$^1$)'
-contourXlabel = 'O$_2$ supply (µM d$^-$$^1$)'
-
-ax1.set_ylabel(contourYlabel, fontsize=fslab)
-ax4.set_ylabel(contourYlabel, fontsize=fslab)
-
-ax4.set_xlabel(contourXlabel, fontsize=fslab)
-ax5.set_xlabel(contourXlabel, fontsize=fslab)
-ax6.set_xlabel(contourXlabel, fontsize=fslab)
-
-
-xlowerlimit = 0
-xupperlimit = max(O20_exp) * dil + 0.01
-xtickdiv = 2
-for ax in [ax1, ax2, ax3, ax4, ax5, ax6]:
-    ax.set_xlim([xlowerlimit, xupperlimit])
-    ax.set_xticks(np.arange(xlowerlimit, xupperlimit, xtickdiv))
-
-cbar1 = fig.colorbar(p1, ax=ax1)
-cbar2 = fig.colorbar(p2, ax=ax2)
-cbar3 = fig.colorbar(p3, ax=ax3)
-cbar4 = fig.colorbar(p4, ax=ax4)
-cbar5 = fig.colorbar(p5, ax=ax5)
-cbar6 = fig.colorbar(p6, ax=ax6)
 plt.tight_layout()
 
 #%% Save the plot
 os.chdir("YourPath")
-fig.savefig('Fig3_a-f.png', dpi=300) 
+fig.savefig('Fig3_b-d.png', dpi=300) 
 
 
 
-#%% N2O Fig.3 g,h,i
+#%% N2O Fig.3 e,f,g
 ## plot the outcomes of the experiments against input O2 concentrations
 fstic = 13
 fslab = 15
@@ -460,7 +436,7 @@ os.chdir("YourPath")
 fig.savefig('Fig3-lines.png', dpi=300)
 
 
-#%% N2O Fig.3 g,h,i insert
+#%% N2O Fig.3 e,f,g insert
 ## plot the outcomes of the experiments against input O2 concentrations
 fstic = 13
 fslab = 15
